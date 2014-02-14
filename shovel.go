@@ -20,6 +20,7 @@ func main() {
 	Tablename := flag.String("tablename", "", "<tablename> else it will make a new one")
 	flag.Parse()
 	con, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", *DBUser, *DBPass, *DBHost, *DBName))
+	defer con.Close()
 	if err != nil {
 		log.Fatalln("Unable to connect to the database, Aborting.")
 	}
@@ -31,6 +32,10 @@ func main() {
 	}
 }
 
-func InsertIntoDB(input string) {
+func InsertIntoDB(input string, tablename string) {
+
+}
+
+func MakeNewTable(DB *sql.DB) string {
 
 }
