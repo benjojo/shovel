@@ -13,7 +13,7 @@ import (
 
 func main() {
 	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
-	logger.Println("Connecting to DB\n")
+	logger.Println("Connecting to DB")
 	DBHost := flag.String("host", "localhost:3306", "<hostname>:<port>")
 	DBName := flag.String("database", "shovel", "<dbname>")
 	DBUser := flag.String("user", "root", "<dbuser>")
@@ -40,12 +40,11 @@ func main() {
 			log.Fatalln("Failed to read from stdin")
 			break
 		}
-		r, e := con.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
+		r, e := con.Exec(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
 		if e != nil {
 			log.Fatalln("Failed to write to the DB")
 			break
 		}
-		r.Close()
 	}
 }
 
