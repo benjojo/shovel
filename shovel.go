@@ -40,8 +40,12 @@ func main() {
 			log.Fatalln("Failed to read from stdin")
 			break
 		}
-		con.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
-
+		r, e := con.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
+		if e != nil {
+			log.Fatalln("Failed to write to the DB")
+			break
+		}
+		r.Close()
 	}
 }
 
