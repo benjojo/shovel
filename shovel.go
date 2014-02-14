@@ -40,12 +40,9 @@ func main() {
 			log.Fatalln("Failed to read from stdin")
 			break
 		}
-		InsertIntoDB(string(line), TN, con)
-	}
-}
+		con.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
 
-func InsertIntoDB(input string, tablename string, DB *sql.DB) {
-	DB.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", tablename), input)
+	}
 }
 
 /*
