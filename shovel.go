@@ -33,13 +33,17 @@ func main() {
 	}
 	bio := bufio.NewReader(os.Stdin)
 	var hasMoreInLine bool = true
-	for hasMoreInLine {
-		line, hasMoreInLine, err := bio.ReadLine()
+	for {
+		line, _, err := bio.ReadLine()
+		if err != nil {
+			log.Fatalln("Failed to read from stdin")
+			break
+		}
 		InsertIntoDB(string(line), TN)
 	}
 }
 
-func InsertIntoDB(input string, tablename string) {
+func InsertIntoDB(input string, tablename string, DB *sql.DB) {
 
 }
 
