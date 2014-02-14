@@ -12,14 +12,14 @@ import (
 )
 
 func main() {
-	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
-	logger.Println("Connecting to DB")
 	DBHost := flag.String("host", "localhost:3306", "<hostname>:<port>")
 	DBName := flag.String("database", "shovel", "<dbname>")
 	DBUser := flag.String("user", "root", "<dbuser>")
 	DBPass := flag.String("pass", "", "<dbpass>")
 	Tablename := flag.String("tablename", "", "<tablename> else it will make a new one")
 	flag.Parse()
+	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
+	logger.Println("Connecting to DB")
 	con, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", *DBUser, *DBPass, *DBHost, *DBName))
 	defer con.Close()
 	if err != nil {
