@@ -31,16 +31,20 @@ func main() {
 	} else {
 		TN = *Tablename
 	}
-	logger.Printf("Logging line by line into %s", TN)
+	logger.Printf("Logging line by line into %s.", TN)
 	bio := bufio.NewReader(os.Stdin)
-
+	q, e := con.Prepare(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN))
+	if e != nil {
+		log.Fatalln("Could not prepare the insert query")
+		return
+	}
 	for {
 		line, _, err := bio.ReadLine()
 		if err != nil {
 			log.Fatalln("Failed to read from stdin")
 			break
 		}
-		r, e := con.Exec(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN), string(line))
+		_, e = q.Exec(string(line))
 		if e != nil {
 			log.Fatalln("Failed to write to the DB")
 			break
