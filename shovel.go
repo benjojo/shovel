@@ -15,7 +15,7 @@ func main() {
 	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
 	logger.Println("Connecting to DB\n")
 	DBHost := flag.String("host", "localhost:3306", "<hostname>:<port>")
-	DBName := flag.String("database", "Shovel", "<dbname>")
+	DBName := flag.String("database", "shovel", "<dbname>")
 	DBUser := flag.String("user", "root", "<dbuser>")
 	DBPass := flag.String("pass", "", "<dbpass>")
 	Tablename := flag.String("tablename", "", "<tablename> else it will make a new one")
@@ -45,7 +45,7 @@ func main() {
 }
 
 func InsertIntoDB(input string, tablename string, DB *sql.DB) {
-	DB.Query("INSERT INTO ? (`line`) VALUES (?);", tablename, input)
+	DB.Query(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", tablename), input)
 }
 
 /*
@@ -59,7 +59,7 @@ COLLATE='utf8_general_ci';
 */
 func MakeNewTable(DB *sql.DB, logger *log.Logger) string {
 	NewTableName := fmt.Sprintf("Shovel_%d", int32(time.Now().Unix()))
-	_, e := DB.Exec("CREATE TABLE ? (`id` INT NOT NULL AUTO_INCREMENT,`line` TEXT NOT NULL,`logtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (`id`))COLLATE='utf8_general_ci';", NewTableName)
+	_, e := DB.Exec(fmt.Sprintf("CREATE TABLE %s (`id` INT NOT NULL AUTO_INCREMENT,`line` TEXT NOT NULL,`logtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (`id`))COLLATE='utf8_general_ci';", NewTableName))
 	if e != nil {
 		logger.Fatalln("Could not make a table to store the data in.")
 	}
