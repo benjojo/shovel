@@ -3,7 +3,7 @@ shovel
 
 Append outputs of programs into SQL tables
 
-#Usage
+###Usage
 
 ```
 Usage of ./shovel:
@@ -15,7 +15,7 @@ Usage of ./shovel:
 
 ```
 
-#Example
+###Example
 
 ```
 ben@daring:~/shovel$ ping 8.8.8.8 | shovel
