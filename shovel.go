@@ -27,24 +27,25 @@ func main() {
 	}
 	TN := ""
 	if *Tablename == "" {
-		TN = MakeNewTable()
+		TN = MakeNewTable(con, logger)
 	} else {
 		TN = *Tablename
 	}
+	logger.Printf("Logging line by line into %s", TN)
 	bio := bufio.NewReader(os.Stdin)
-	var hasMoreInLine bool = true
+
 	for {
 		line, _, err := bio.ReadLine()
 		if err != nil {
 			log.Fatalln("Failed to read from stdin")
 			break
 		}
-		InsertIntoDB(string(line), TN)
+		InsertIntoDB(string(line), TN, con)
 	}
 }
 
 func InsertIntoDB(input string, tablename string, DB *sql.DB) {
-
+	DB.Query("INSERT INTO ? (`line`) VALUES (?);", tablename, input)
 }
 
 /*
