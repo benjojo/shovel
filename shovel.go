@@ -35,18 +35,18 @@ func main() {
 	bio := bufio.NewReader(os.Stdin)
 	q, e := con.Prepare(fmt.Sprintf("INSERT INTO %s (`line`) VALUES (?);", TN))
 	if e != nil {
-		log.Fatalln("Could not prepare the insert query")
+		logger.Fatalln("Could not prepare the insert query")
 		return
 	}
 	for {
 		line, _, err := bio.ReadLine()
 		if err != nil {
-			log.Fatalln("Failed to read from stdin")
+			logger.Fatalln("Failed to read from stdin")
 			break
 		}
 		_, e = q.Exec(string(line))
 		if e != nil {
-			log.Fatalln("Failed to write to the DB")
+			logger.Fatalln("Failed to write to the DB")
 			break
 		}
 	}
