@@ -12,10 +12,11 @@ import (
 )
 
 func main() {
-	DBHost := flag.String("host", "localhost:3306", "<hostname>:<port>")
-	DBName := flag.String("database", "shovel", "<dbname>")
-	DBUser := flag.String("user", "root", "<dbuser>")
-	DBPass := flag.String("pass", "", "<dbpass>")
+	CFG := GetCFG()
+	DBHost := flag.String("host", CFG.DBHost, "<hostname>:<port>")
+	DBName := flag.String("database", CFG.DBName, "<dbname>")
+	DBUser := flag.String("user", CFG.DBUser, "<dbuser>")
+	DBPass := flag.String("pass", CFG.DBPass, "<dbpass>")
 	Tablename := flag.String("tablename", "", "<tablename> else it will make a new one")
 	flag.Parse()
 	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
