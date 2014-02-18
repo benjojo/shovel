@@ -39,16 +39,24 @@ func main() {
 		logger.Fatalln("Could not prepare the insert query")
 		return
 	}
+	buf := make(chan string, 100)
+	go LogRot(buf, q)
 	for {
 		line, _, err := bio.ReadLine()
 		if err != nil {
 			logger.Fatalln("Failed to read from stdin")
 			break
 		}
-		_, e = q.Exec(string(line))
+		buf <- string(line)
+	}
+}
+
+func LogRot(input chan string, query *sql.Stmt) {
+	for line := range input {
+		_, e := query.Exec(string(line))
 		if e != nil {
-			logger.Fatalln("Failed to write to the DB")
-			break
+			log.Fatalln("Failed to write to the DB")
+			return
 		}
 	}
 }
