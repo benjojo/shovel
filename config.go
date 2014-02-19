@@ -8,18 +8,20 @@ import (
 )
 
 type Defaults struct {
-	DBHost string
-	DBName string
-	DBUser string
-	DBPass string
+	DBHost    string
+	DBName    string
+	DBUser    string
+	DBPass    string
+	Buffering bool
 }
 
 func GetCFG() Defaults {
 	Ret := Defaults{
-		DBHost: "localhost:3306",
-		DBName: "shovel",
-		DBUser: "root",
-		DBPass: "",
+		DBHost:    "localhost:3306",
+		DBName:    "shovel",
+		DBUser:    "root",
+		DBPass:    "",
+		Buffering: false,
 	}
 	cu, e := user.Current()
 	if e != nil {
