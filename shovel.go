@@ -39,7 +39,12 @@ func main() {
 		logger.Fatalln("Could not prepare the insert query")
 		return
 	}
-	buf := make(chan string, 100)
+	var buf chan string
+	if CFG.Buffering {
+		buf = make(chan string, 100)
+	} else {
+		buf = make(chan string)
+	}
 	go LogRot(buf, q)
 	for {
 		line, _, err := bio.ReadLine()
