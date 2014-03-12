@@ -17,6 +17,7 @@ func main() {
 	DBName := flag.String("database", CFG.DBName, "<dbname>")
 	DBUser := flag.String("user", CFG.DBUser, "<dbuser>")
 	DBPass := flag.String("pass", CFG.DBPass, "<dbpass>")
+	Buffer := flag.Bool("buffer", true, "Enable async input from stdin (up to 100 lines buffered before blocking)")
 	Tablename := flag.String("tablename", "", "<tablename> else it will make a new one")
 	flag.Parse()
 	logger := log.New(os.Stderr, "[Shovel]", log.Ltime)
@@ -40,7 +41,7 @@ func main() {
 		return
 	}
 	var buf chan string
-	if CFG.Buffering {
+	if *Buffer {
 		buf = make(chan string, 100)
 	} else {
 		buf = make(chan string)
