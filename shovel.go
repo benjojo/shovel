@@ -41,7 +41,7 @@ func main() {
 		return
 	}
 	var buf chan string
-	if *Buffer {
+	if *Buffer || CFG.Buffering {
 		buf = make(chan string, 100)
 	} else {
 		buf = make(chan string)
